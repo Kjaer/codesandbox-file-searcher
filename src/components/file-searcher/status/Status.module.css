@@ -1,0 +1,18 @@
+.status {
+    color: var(--colors-grays-500);
+    text-align: center;
+    padding: var(--space-2) 0;
+    margin: 0;
+    line-height: 120%;
+    border-bottom: 1px solid var(--colors-grays-500);
+}
+
+.status.hasResult {
+    color: var(--colors-white);
+}
+.status.loading {
+    font-style: italic;
+    font-weight: var(--fontWeights-medium);
+    color: var(--colors-grays-300);
+}
+

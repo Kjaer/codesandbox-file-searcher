@@ -1,0 +1,33 @@
+/*
+ * in order to achieve smooth expanding animation on FileTree component, I created
+ * batch keyframes and classes for covering enough. It's a tradeoff for having a react-lib for
+ * file tree, yet requires some manual work to adjust the height.
+*/
+
+// $file-tree-item-height should match the height of <li> element
+$file-tree-item-height: 28px;
+
+// there is no efficient way to produce arbitrary animations :/
+@for $i from 1 through 50 {
+    @keyframes slideDown-#{$i} {
+        0% {
+            opacity: 0;
+            height: 0;
+        }
+
+        99.99% {
+            opacity: 1;
+            height: calc(#{$i} * #{$file-tree-item-height});
+        }
+
+        100% {
+            opacity: 1;
+            height: auto;
+        }
+    }
+
+    .slideDown-#{$i} {
+        animation-name: slideDown-#{$i};
+    }
+}
+

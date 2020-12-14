@@ -1,0 +1,26 @@
+@import-normalize;
+
+@import url("https://rsms.me/inter/inter.css");
+
+html {
+  font-family: "Inter", sans-serif;
+}
+
+body{
+  margin: var(--space-0);
+  padding: var(--space-0);
+  height: 100vh;
+  font-size: var(--fontSizes-3);
+}
+
+.bgDark{
+  background: var(--colors-grays-900);
+  color: var(--colors-grays-200);
+}
+
+.app{
+  display: flex;
+  height: 100vh;
+  /* this is thematic join for the app class.*/
+  composes: bgDark;
+}

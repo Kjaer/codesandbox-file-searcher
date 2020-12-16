@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useMiniSearch } from 'react-minisearch'
+import { tokenize } from 'string-punctuation-tokenizer';
 
 import SearchForm from "./search-form/SearchForm";
 import FileTree from "./file-tree/FileTree";
@@ -8,7 +9,16 @@ import { fetchSandbox } from "../../api/SandboxAPI";
 
 import styles from "./FileSearcher.module.css";
 
-const myTokenizer = require('wink-tokenizer')();
+// token options
+const tokenizerOptions = {
+  includeWords: true,
+  includeNumbers: true,
+  includeWhitespace: false,
+  includePunctuation: true,
+  includeUnknown: true,
+  greedy: true,
+  verbose: false
+};
 
 // Full Text Search Engine
 const stopWords = new Set(['the', 'a', 'an'])
@@ -16,7 +26,7 @@ const searchOptions = {
   fields: ['code'],
   storeFields: ['title', 'code'],
   processTerm: (term) => stopWords.has(term) ? null : term,
-  tokenize: (text) =>  myTokenizer.tokenize(text).map(({value}) => value.toLowerCase()),
+  tokenize: (text) => tokenize({text, ...tokenizerOptions}).map(token => token.toLowerCase()),
   searchOptions: {
     fuzzy: false,
     prefix: true
@@ -33,6 +43,7 @@ function FileSearcher(props) {
   } = useMiniSearch(props.sandboxFiles, searchOptions);
   const [userInput, setUserInput] = useState({ isCaseSensitive: false, searchTerm: '' })
 
+
   useEffect(() => {
     if (!props.sandboxFiles.length) {
       return
@@ -40,6 +51,7 @@ function FileSearcher(props) {
 
     addAllAsync(props.sandboxFiles)
 
+  // eslint-disable-next-line
   }, [props.sandboxFiles.length])
 
   // status is computed value based on other states and props value.

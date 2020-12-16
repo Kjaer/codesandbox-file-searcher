@@ -8,7 +8,7 @@ export default function SearchForm(props) {
   const [isCaseSensitive, setCaseSensitivity] = useState(false);
 
   function onSearchSubmit() {
-    if(searchTerm === '') {
+    if(searchTerm === '' || searchTerm.length < 3) {
       return;
     }
 

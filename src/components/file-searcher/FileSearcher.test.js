@@ -54,6 +54,7 @@ describe('FileSearcher', () => {
     //restore back
     MiniSearch.prototype.search.mockRestore();
   })
+
   it('Default search is not case sensitive', async () => {
 
     await waitFor(() => {
@@ -61,18 +62,17 @@ describe('FileSearcher', () => {
     })
 
     // in order to check search going to be performed with case insensitive, execute the search
-    // and check the result. case senstive search will return different results.
+    // and check the result. case sensitive search will return different results.
 
     userEvent.type(screen.getByTestId('csbx-file-search-text-input'), 'react{enter}');
     expect(screen.getByTestId('csbx-file-search-file-occurrence-list-51cc310c-a7df-4120-81b5-d50e83d662f0').children.length).toEqual(3)
-
   })
+
   it('Case sensitive results are different than case insensitive', async () => {
 
     await waitFor(() => {
       render(<FileSearcher/>)
     })
-
 
     userEvent.type(screen.getByTestId('csbx-file-search-text-input'), 'react{enter}');
     expect(screen.getByTestId('csbx-file-search-file-occurrence-list-51cc310c-a7df-4120-81b5-d50e83d662f0').children.length).toEqual(3)
@@ -82,7 +82,9 @@ describe('FileSearcher', () => {
     userEvent.type(screen.getByTestId('csbx-file-search-text-input'), 'React{enter}');
     expect(screen.getByTestId('csbx-file-search-file-occurrence-list-51cc310c-a7df-4120-81b5-d50e83d662f0').children.length).toEqual(1)
   })
+
   it('Search results are grouped by file names', async () => {
+
     await waitFor(() => {
       render(<FileSearcher/>)
     })
@@ -90,8 +92,8 @@ describe('FileSearcher', () => {
     userEvent.type(screen.getByTestId('csbx-file-search-text-input'), 'react{enter}');
     expect(screen.getByTestId('csbx-file-search-file-name-51cc310c-a7df-4120-81b5-d50e83d662f0')).not.toBeNull()
     expect(screen.getByTestId('csbx-file-search-file-name-a41760e1-63f2-4c67-991d-d5d12cb4aca7')).not.toBeNull()
-
   })
+
   it('Search term is highlighted on the result', async () => {
 
     await waitFor(() => {

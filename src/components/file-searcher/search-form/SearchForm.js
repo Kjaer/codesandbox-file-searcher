@@ -1,14 +1,17 @@
-import { useState, useRef, Fragment } from 'react';
+import { useState, useRef, forwardRef, Fragment } from 'react';
 import { SearchIcon, MatchCaseIcon } from "../../../lib/icons";
 
 import styles from "./SearchForm.module.css";
 
+
 export default function SearchForm(props) {
   const [searchTerm, setSearchTerm] = useState('');
   const [isCaseSensitive, setCaseSensitivity] = useState(false);
+  const inputSearchElement = useRef(null);
 
   function onSearchSubmit() {
     if(searchTerm === '' || searchTerm.length < 3) {
+      inputSearchElement.current && inputSearchElement.current.reportValidity();
       return;
     }
 
@@ -18,6 +21,7 @@ export default function SearchForm(props) {
   return(
     <Fragment>
       <SearchInput
+        ref={inputSearchElement}
         setSearchTerm={setSearchTerm}
         setCaseSensitivity={setCaseSensitivity}
         iconSearch={SearchIcon}
@@ -39,7 +43,7 @@ export default function SearchForm(props) {
   )
 }
 
-function SearchInput(props) {
+function SearchInputBase(props, ref) {
   const {
     iconSearch,
     iconCaseSensitivityToggle,
@@ -127,10 +131,13 @@ function SearchInput(props) {
         ].join(" ")}
       >
         <input
+          ref={ref}
           type="search"
           className={styles.searchInput}
           autoComplete="off"
           placeholder="Search"
+          required
+          minLength="3"
           onChange={onTextChange}
           onKeyDown={onKeyDown}
           onFocus={onHighlight}
@@ -143,3 +150,4 @@ function SearchInput(props) {
     </div>
   )
 }
+const SearchInput = forwardRef(SearchInputBase);

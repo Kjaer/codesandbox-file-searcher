@@ -1,7 +1,11 @@
+import {Fragment} from "react";
+
+// Components
+import Status from "../status/Status";
+
+// Styles
 import styles from "./FileTree.module.css";
 
-import Status from "../status/Status";
-import {Fragment} from "react";
 
 export default function FileTree(props) {
   if (props.files === null) {
@@ -49,27 +53,28 @@ export default function FileTree(props) {
 }
 
 function FileNode(props) {
+  const { file, file: { matches: { highlighted } } } = props
   return(
     <details className={styles.fileNode} open>
       <summary
         className={styles.file}
-        data-testid={`csbx-file-search-file-name-${props.file.id}`}
+        data-testid={`csbx-file-search-file-name-${file.id}`}
       >
-        <span className={styles.name}>{props.file.name}</span>
+        <span className={styles.name}>{file.name}</span>
       </summary>
       <ul
         className={[
           styles.foundLines,
-          `slideDown-${props.file.matches.highlighted.length}`
+          `slideDown-${highlighted.length}`
         ].join(" ")}
-        data-testid={`csbx-file-search-file-occurrence-list-${props.file.id}`}
+        data-testid={`csbx-file-search-file-occurrence-list-${file.id}`}
       >
-        {props.file.matches.highlighted.map(({prefix, searchTerm, suffix}, idx) => (
-          <li key={`${props.file.id}-${idx}`} className={styles.line}>
+        {highlighted.map(({prefix, searchTerm, suffix}, idx) => (
+          <li key={`${file.id}-${idx}`} className={styles.line}>
             {prefix}
             <mark
               className={styles.highlight}
-              data-testid={`csbx-file-search-highlighted-term-${props.file.id}-${idx}`}
+              data-testid={`csbx-file-search-highlighted-term-${file.id}-${idx}`}
             >
               {searchTerm}
             </mark>

@@ -1,8 +1,10 @@
 import { useState, useRef, forwardRef, Fragment } from 'react';
+
+// Components
 import { SearchIcon, MatchCaseIcon } from "../../../lib/icons";
 
+// Styles
 import styles from "./SearchForm.module.css";
-
 
 export default function SearchForm(props) {
   const [searchTerm, setSearchTerm] = useState('');

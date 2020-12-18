@@ -2,11 +2,15 @@ import { useEffect, useState } from "react";
 import { useMiniSearch } from 'react-minisearch'
 import { tokenize } from 'string-punctuation-tokenizer';
 
+// API
+import { fetchSandbox } from "../../api/SandboxAPI";
+
+// Components
 import SearchForm from "./search-form/SearchForm";
 import FileTree from "./file-tree/FileTree";
 import Status from "./status/Status";
-import { fetchSandbox } from "../../api/SandboxAPI";
 
+// Styles
 import styles from "./FileSearcher.module.css";
 
 // token options

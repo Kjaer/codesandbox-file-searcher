@@ -83,7 +83,7 @@ function FileNode(props) {
 
   useLayoutEffect(() => {
     highlightsRefs.forEach(({current:container}) => moveHighlightsInViewport(container))
-  }, [])
+  }, [highlightsRefs])
 
   return(
     <details className={styles.fileNode} open>

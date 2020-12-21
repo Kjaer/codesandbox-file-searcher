@@ -1,4 +1,4 @@
-import { Fragment, useLayoutEffect, useRef, createRef } from "react";
+import { Fragment, useLayoutEffect, createRef } from "react";
 
 // Components
 import Status from "../status/Status";
@@ -31,19 +31,16 @@ export default function FileTree(props) {
     return `${occurrences} results in ${filesCount} files`
   })(files.length, totalOccurrences)
 
+  const fileKeys = files.length > 0 ? crypto.getRandomValues(new Uint16Array(files.length)) : [];
+  
   return(
     <Fragment>
       <Status message={status} hasResult={files.length > 0}/>
 
-      {/*
-        Reason I am adding index number into key, resetting the component for every new search result,
-        if the current search result has the same file from the previous search result,
-        It will preserve previous search condition, and key comes to help the reset the previous condition of the component.
-      */}
       <section className={styles.container}>
         {files.map((file, idx) => (
           <FileNode
-            key={`${file.id}-${idx}`}
+            key={fileKeys[idx]}
             file={file}
           />
         ))}
@@ -55,7 +52,7 @@ export default function FileTree(props) {
 function FileNode(props) {
   const { file, file: { matches: { highlighted } } } = props
 
-  const { current: highlightsRefs } = useRef(Array.from({ length: highlighted.length }, () => createRef(null)))
+  const highlightsRefs = Array.from({ length: highlighted.length }, () => createRef(null))
 
   function moveHighlightsInViewport(container) {
     const containerBounds = container.getBoundingClientRect();
@@ -68,14 +65,14 @@ function FileNode(props) {
     const containerSpace = parseInt(getComputedStyle(container).getPropertyValue('--parent-space'));
     const wrapperSpace = parseInt(getComputedStyle(container).getPropertyValue('--wrapper-space'));
     const scrollSpace = parseInt(getComputedStyle(container).getPropertyValue('--scroll-space'));
+    const spaces = containerSpace + wrapperSpace + scrollSpace;
 
-    const highlightedTermPosition = highlightedTermBounds.left + containerSpace + wrapperSpace + scrollSpace;
+    const highlightedTermPosition = highlightedTermBounds.left + spaces;
 
     if ( highlightedTermPosition > containerBounds.right) {
       const termElementLeft = Math.ceil(highlightedTermBounds.left);
       const containerElementRight = Math.ceil(containerBounds.right);
       const termLong = Math.ceil(highlightedTermBounds.width);
-      const spaces = containerSpace + wrapperSpace + scrollSpace;
 
       container.style.textIndent = (((termElementLeft - containerElementRight) + termLong + spaces) * -1) + "px";
     }
@@ -150,10 +147,10 @@ function findOccurrencesAndHighlight(source, userInput) {
     occurrence++;
     nextCursor = cursor + pattern.length;
 
-    const line = getSlice(source, pattern, cursor);
+    const line = getSlice(source, searchTerm, cursor);
     highlighted.push(line)
 
-    cursor = source.indexOf(pattern, nextCursor);
+    cursor = sourceCode.indexOf(pattern, nextCursor);
   }
 
   return {

@@ -41,7 +41,6 @@
     width: 100%;
     background-color: transparent;
     color: var(--colors-white);
-    outline: none;
 }
 
 .caseSensitivityToggle {

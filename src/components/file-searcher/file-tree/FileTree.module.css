@@ -4,7 +4,6 @@
     flex: 1;
 }
 
-
 .fileNode {
     margin: var(--space-2) 0 var(--space-5);
 }
@@ -14,7 +13,6 @@
     margin: 0 0 var(--space-2);
     transition: var(--duration-5);
     user-select: none;
-    outline: none;
     line-height: 120%;
 }
 
@@ -44,6 +42,18 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    position: relative;
+    /*
+        VARS - This is indirect coupling of FileTree component
+        and FileNode component. In order to successfully move
+        highlighted terms left I should possess spacing information.
+        acquiring these information from parent component makes them
+        coupled each other and interfere their implementation details.
+    */
+    --parent-space: var(--space-4);
+    --wrapper-space: var(--space-5);
+    --scroll-space: 15px;
+
 }
 .foundLines .line:hover,
 .foundLines .line:hover .highlight {

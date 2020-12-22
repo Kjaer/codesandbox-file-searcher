@@ -1,3 +1,6 @@
+/*global globalThis*/
+/*eslint no-undef: "error"*/
+
 import { Fragment, useLayoutEffect, createRef } from "react";
 
 // Components

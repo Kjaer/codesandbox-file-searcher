@@ -31,7 +31,7 @@ export default function FileTree(props) {
     return `${occurrences} results in ${filesCount} files`
   })(files.length, totalOccurrences)
 
-  const fileKeys = files.length > 0 ? crypto.getRandomValues(new Uint16Array(files.length)) : [];
+  const fileKeys = files.length > 0 ? globalThis.crypto.getRandomValues(new Uint16Array(files.length)) : [];
   
   return(
     <Fragment>
@@ -62,9 +62,9 @@ function FileNode(props) {
      * component and FileTree component.
      * Spaces below are necessary values in order to shift the highlighted value in the viewport.
      */
-    const containerSpace = parseInt(getComputedStyle(container).getPropertyValue('--parent-space'));
-    const wrapperSpace = parseInt(getComputedStyle(container).getPropertyValue('--wrapper-space'));
-    const scrollSpace = parseInt(getComputedStyle(container).getPropertyValue('--scroll-space'));
+    const containerSpace = parseInt(globalThis.getComputedStyle(container).getPropertyValue('--parent-space'));
+    const wrapperSpace = parseInt(globalThis.getComputedStyle(container).getPropertyValue('--wrapper-space'));
+    const scrollSpace = parseInt(globalThis.getComputedStyle(container).getPropertyValue('--scroll-space'));
     const spaces = containerSpace + wrapperSpace + scrollSpace;
 
     const highlightedTermPosition = highlightedTermBounds.left + spaces;

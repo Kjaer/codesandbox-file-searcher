@@ -60,7 +60,7 @@ describe('FileSearcher', () => {
     await waitFor(() => {
       render(<FileSearcher/>)
     })
-
+    debugger
     // in order to check search going to be performed with case insensitive, execute the search
     // and check the result. case sensitive search will return different results.
 

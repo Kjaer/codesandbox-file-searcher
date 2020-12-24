@@ -1,26 +1,27 @@
-import { useState, useRef, forwardRef, Fragment } from 'react';
+import { useState, useRef, Fragment } from "react";
 
 // Components
+import SearchInput from "./SearchInput";
 import { SearchIcon, MatchCaseIcon } from "../../../lib/icons";
 
 // Styles
 import styles from "./SearchForm.module.css";
 
 export default function SearchForm(props) {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [isCaseSensitive, setCaseSensitivity] = useState(false);
   const inputSearchElement = useRef(null);
 
   function onSearchSubmit() {
-    if(searchTerm === '' || searchTerm.length < 3) {
+    if (searchTerm === "" || searchTerm.length < 3) {
       inputSearchElement.current && inputSearchElement.current.reportValidity();
       return;
     }
 
-    props.invokeSearch(searchTerm, isCaseSensitive)
+    props.invokeSearch(searchTerm, isCaseSensitive);
   }
 
-  return(
+  return (
     <Fragment>
       <SearchInput
         ref={inputSearchElement}
@@ -31,125 +32,13 @@ export default function SearchForm(props) {
         onSearchKeyDown={onSearchSubmit}
       />
 
-      <hr className={styles.divider}/>
+      <hr className={styles.divider} />
 
-      <button
-        className={styles.submitButton}
-        onClick={onSearchSubmit}
-      >
-          Search
+      <button className={styles.submitButton} onClick={onSearchSubmit}>
+        Search
       </button>
 
-      <hr className={styles.divider}/>
+      <hr className={styles.divider} />
     </Fragment>
-  )
+  );
 }
-
-function SearchInputBase(props, ref) {
-  const {
-    iconSearch,
-    iconCaseSensitivityToggle,
-    setSearchTerm,
-    setCaseSensitivity
-  } = props;
-
-  const searchContainerElement = useRef(null)
-
-  const onTextChange = (event) => {
-    const { value: searchTerm } = event.target;
-
-    setSearchTerm(searchTerm);
-  }
-
-  const onKeyDown = ({key}) => {
-    if (key !== 'Enter') {
-      return;
-    }
-
-    props.onSearchKeyDown();
-  }
-
-  const onToggleCaseSensitive = (event) => {
-    const { checked: caseSensitivity } = event.target;
-
-    setCaseSensitivity(caseSensitivity)
-  }
-
-  function onHighlight() {
-    const classList = Array.from(searchContainerElement.current.classList);
-
-    if (classList.includes(styles.searchInputContainerActive)){
-      searchContainerElement.current.classList.remove(styles.searchInputContainerActive)
-    } else {
-      searchContainerElement.current.classList.add(styles.searchInputContainerActive)
-    }
-  }
-
-  // render
-  function addSearchIcon(SearchIcon) {
-    if (!SearchIcon) {
-      return null
-    }
-
-    return (
-      <div className={styles.searchInputItem}>
-        <SearchIcon size={16} />
-      </div>
-    )
-  }
-
-  function addCaseSensitivityToggle(MatchCaseToggleIcon, onChangeHandler){
-    if (!MatchCaseToggleIcon) {
-      return null
-    }
-
-    return (
-      <div className={styles.searchInputItem}>
-        <label
-          className={styles.caseSensitivityToggle}
-          data-testid="csbx-file-search-case-sensitivity-toggle"
-        >
-          <input
-            type="checkbox"
-            onChange={onChangeHandler}
-          />
-          <MatchCaseToggleIcon size={16} />
-        </label>
-      </div>
-    )
-  }
-
-  return(
-    <div
-      ref={searchContainerElement}
-      className={styles.searchInputContainer}
-    >
-      {addSearchIcon(iconSearch)}
-
-      <div
-        className={[
-          styles.searchInputItem,
-          styles.searchInputItemLarge
-        ].join(" ")}
-      >
-        <input
-          ref={ref}
-          type="search"
-          className={styles.searchInput}
-          autoComplete="off"
-          placeholder="Search"
-          required
-          minLength="3"
-          onChange={onTextChange}
-          onKeyDown={onKeyDown}
-          onFocus={onHighlight}
-          onBlur={onHighlight}
-          data-testid="csbx-file-search-text-input"
-        />
-      </div>
-
-      {addCaseSensitivityToggle(iconCaseSensitivityToggle, onToggleCaseSensitive)}
-    </div>
-  )
-}
-const SearchInput = forwardRef(SearchInputBase);

@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: var(--space-4) var(--space-2);
+  border: 1px solid var(--colors-grays-500);
+  border-radius: var(--radii-small);
+  height: var(--sizes-6);
+  background-color: var(--colors-grays-600);
+  color: var(--colors-grays-400);
+  box-sizing: border-box;
+}
+.container:hover {
+  border-color: var(--colors-grays-400);
+}
+.containerActive {
+  border-color: var(--colors-grays-400);
+  color: var(--colors-white);
+}
+
+.wrapper {
+  display: flex;
+}
+.wrapper > * {
+  padding: 0 var(--space-1);
+}
+.wrapperLarge {
+  flex: 2;
+}
+
+.searchInput {
+  border: none;
+  height: 100%;
+  width: 100%;
+  background-color: transparent;
+  color: var(--colors-white);
+}
+
+.caseSensitivityToggle {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+}
+.caseSensitivityToggle input[type="checkbox"] {
+  visibility: hidden;
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+.caseSensitivityToggle input[type="checkbox"] + * {
+  color: var(--colors-grays-400);
+}
+.caseSensitivityToggle input[type="checkbox"]:checked + * {
+  color: var(--colors-white);
+}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useMiniSearch } from 'react-minisearch'
-import { tokenize } from 'string-punctuation-tokenizer';
+import { useMiniSearch } from "react-minisearch";
+import { tokenize } from "string-punctuation-tokenizer";
 
 // API
 import { fetchSandbox } from "../../api/SandboxAPI";
@@ -13,7 +13,7 @@ import Status from "./status/Status";
 // Styles
 import styles from "./FileSearcher.module.css";
 
-// token options
+// Tokenizer options
 const tokenizerOptions = {
   includeWords: true,
   includeNumbers: true,
@@ -24,39 +24,39 @@ const tokenizerOptions = {
   verbose: false
 };
 
-// Full Text Search Engine
-const stopWords = new Set(['the', 'a', 'an'])
+// Full Text Search Engine options
+const stopWords = new Set(["the", "a", "an"]);
 const searchOptions = {
-  fields: ['code'],
-  storeFields: ['title', 'code'],
-  processTerm: (term) => stopWords.has(term) ? null : term,
-  tokenize: (text) => tokenize({text, ...tokenizerOptions}).map(token => token.toLowerCase()),
+  fields: ["code"],
+  storeFields: ["title", "code"],
+  processTerm: (term) => (stopWords.has(term) ? null : term),
+  tokenize: (text) =>
+    tokenize({ text, ...tokenizerOptions }).map((token) => token.toLowerCase()),
   searchOptions: {
     fuzzy: false,
     prefix: true
   }
 };
 
-
 function FileSearcher(props) {
-  const {
-    search,
-    searchResults,
-    addAllAsync,
-    isIndexing
-  } = useMiniSearch(props.sandboxFiles, searchOptions);
-  const [userInput, setUserInput] = useState({ isCaseSensitive: false, searchTerm: '' })
-
+  const { search, searchResults, addAllAsync, isIndexing } = useMiniSearch(
+    props.sandboxFiles,
+    searchOptions
+  );
+  const [userInput, setUserInput] = useState({
+    isCaseSensitive: false,
+    searchTerm: ""
+  });
 
   useEffect(() => {
     if (!props.sandboxFiles.length) {
-      return
+      return;
     }
 
-    addAllAsync(props.sandboxFiles)
+    addAllAsync(props.sandboxFiles);
 
-  // eslint-disable-next-line
-  }, [props.sandboxFiles.length])
+    // eslint-disable-next-line
+  }, [props.sandboxFiles.length]);
 
   // status is computed value based on other states and props value.
   const status = ((sandboxFilesCount, indexingFiles) => {
@@ -68,26 +68,27 @@ function FileSearcher(props) {
       return "file indexing is in progress...";
     }
 
-    return ""
+    return "";
   })(props.sandboxFiles.length, isIndexing);
 
   function executeSearch(searchTerm, isCaseSensitive = false) {
     search(searchTerm, {
-      processTerm(term) {
-        if(stopWords.has(term)) {
+      processTerm: (term) => {
+        if (stopWords.has(term)) {
           return null;
         }
-        return isCaseSensitive ? term : term.toLowerCase()
+
+        return isCaseSensitive ? term : term.toLowerCase();
       }
-    })
+    });
 
     setUserInput({
       searchTerm,
       isCaseSensitive
-    })
+    });
   }
 
-  return(
+  return (
     <aside className={styles.wrapper}>
       <h3 className={styles.title}>Search</h3>
 
@@ -97,7 +98,7 @@ function FileSearcher(props) {
 
       <FileTree files={searchResults} userInput={userInput} />
     </aside>
-  )
+  );
 }
 
 function withSandboxFiles(Component) {
@@ -106,14 +107,14 @@ function withSandboxFiles(Component) {
 
     useEffect(() => {
       fetchSandbox()
-        .then(sandbox => sandbox.data.modules.filter(file => !file.is_binary))
-        .then(setSandboxFiles)
+        .then((sandbox) =>
+          sandbox.data.modules.filter((file) => !file.is_binary)
+        )
+        .then(setSandboxFiles);
     }, []);
 
-    return (
-      <Component {...props} sandboxFiles={sandboxFiles} />
-    )
-  }
+    return <Component {...props} sandboxFiles={sandboxFiles} />;
+  };
 }
 
-export default withSandboxFiles(FileSearcher)
+export default withSandboxFiles(FileSearcher);

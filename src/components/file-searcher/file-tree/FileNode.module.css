@@ -1,0 +1,60 @@
+.fileNode {
+  margin: var(--space-2) 0 var(--space-5);
+}
+
+.file {
+  color: var(--colors-grays-300);
+  margin: 0 0 var(--space-2);
+  transition: var(--duration-5);
+  user-select: none;
+  line-height: 120%;
+}
+
+.name {
+  padding: 0 0 0 var(--space-3);
+}
+
+.file ~ .occurrences {
+  list-style: none;
+  padding: 0 0 0 var(--space-5);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  height: 100%;
+  user-select: none;
+  line-height: 1.5;
+  /*slide animation general settings*/
+  animation-duration: var(--duration-6);
+  animation-fill-mode: forwards;
+}
+
+.line {
+  color: var(--colors-grays-300);
+  cursor: pointer;
+  line-height: 21pt;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+  /*
+   * VARS - This is indirect coupling of FileTree component
+   * and FileNode component. In order to successfully move
+   * highlighted terms left I should possess spacing information.
+   * acquiring these information from parent component makes them
+   * coupled each other and interfere their implementation details.
+   */
+  --parent-space: var(--space-4);
+  --wrapper-space: var(--space-5);
+  --scroll-space: 15px;
+}
+.line:hover,
+.line:hover .highlight {
+  color: var(--colors-white);
+}
+
+.highlight {
+  background-color: rgba(252, 214, 71, 0.3);
+  color: var(--colors-grays-200);
+  padding: var(--space-1) 0;
+}

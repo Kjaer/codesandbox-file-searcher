@@ -11,7 +11,6 @@
     "node-sass": "4.14.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-minisearch": "^3.0.0",
     "react-scripts": "4.0.1",
     "string-punctuation-tokenizer": "^2.1.2"
   },
@@ -40,5 +39,7 @@
       "last 1 safari version"
     ]
   },
-  "engines" : { "node" : ">=14.15.0" }
+  "engines": {
+    "node": ">=14.15.0"
+  }
 }

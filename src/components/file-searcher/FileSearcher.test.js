@@ -70,9 +70,11 @@ describe("FileSearcher", () => {
     await waitFor(() => {
       render(<FileSearcher />);
     });
-    debugger;
-    // in order to check search going to be performed with case insensitive, execute the search
-    // and check the result. case sensitive search will return different results.
+    /*
+     * Given data for search returns different result for the term `react`
+     * in order to test the case sensitivity, I simply perform search and
+     * check the result count.
+     */
 
     userEvent.type(
       screen.getByTestId("csbx-file-search-text-input"),
@@ -106,7 +108,10 @@ describe("FileSearcher", () => {
     userEvent.clear(screen.getByTestId("csbx-file-search-text-input"));
     userEvent.type(
       screen.getByTestId("csbx-file-search-text-input"),
-      "React{enter}"
+      "React"
+    );
+    userEvent.click(
+      screen.getByTestId("csbx-file-search-submit-button")
     );
     expect(
       screen.getByTestId(
@@ -143,7 +148,10 @@ describe("FileSearcher", () => {
 
     userEvent.type(
       screen.getByTestId("csbx-file-search-text-input"),
-      "React{enter}"
+      "React"
+    );
+    userEvent.click(
+      screen.getByTestId("csbx-file-search-submit-button")
     );
     expect(
       screen.getByTestId(

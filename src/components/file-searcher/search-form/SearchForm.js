@@ -34,7 +34,11 @@ export default function SearchForm(props) {
 
       <hr className={styles.divider} />
 
-      <button className={styles.submitButton} onClick={onSearchSubmit}>
+      <button
+        className={styles.submitButton}
+        onClick={onSearchSubmit}
+        data-testid="csbx-file-search-submit-button"
+      >
         Search
       </button>
 

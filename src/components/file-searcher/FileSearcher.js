@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useMiniSearch } from "react-minisearch";
+// import { useMiniSearch } from "react-minisearch";
+import MiniSearch from "minisearch";
 import { tokenize } from "string-punctuation-tokenizer";
 
 // API
@@ -13,36 +14,43 @@ import Status from "./status/Status";
 // Styles
 import styles from "./FileSearcher.module.css";
 
-// Tokenizer options
-const tokenizerOptions = {
-  includeWords: true,
-  includeNumbers: true,
-  includeWhitespace: false,
-  includePunctuation: true,
-  includeUnknown: true,
-  greedy: true,
-  verbose: false
-};
-
-// Full Text Search Engine options
-const stopWords = new Set(["the", "a", "an"]);
-const searchOptions = {
-  fields: ["code"],
-  storeFields: ["title", "code"],
-  processTerm: (term) => (stopWords.has(term) ? null : term),
-  tokenize: (text) =>
-    tokenize({ text, ...tokenizerOptions }).map((token) => token.toLowerCase()),
-  searchOptions: {
-    fuzzy: false,
-    prefix: true
-  }
-};
 
 function FileSearcher(props) {
-  const { search, searchResults, addAllAsync, isIndexing } = useMiniSearch(
-    props.sandboxFiles,
-    searchOptions
-  );
+  // const { search, searchResults, addAllAsync, isIndexing } = useMiniSearch(
+  //   props.sandboxFiles,
+  //   searchOptions
+  // );
+  const stopWords = new Set(["the", "a", "an"]);
+
+  const [miniSearch] = useState(() => {
+    // Tokenizer options
+    const tokenizerOptions = {
+      includeWords: true,
+      includeNumbers: true,
+      includeWhitespace: false,
+      includePunctuation: true,
+      includeUnknown: true,
+      greedy: true,
+      verbose: false
+    };
+
+    // Full Text Search Engine options
+    const searchOptions = {
+      fields: ["code"],
+      storeFields: ["title", "code"],
+      processTerm: (term) => (stopWords.has(term) ? null : term),
+      tokenize: (text) =>
+        tokenize({ text, ...tokenizerOptions }).map((token) => token.toLowerCase()),
+      searchOptions: {
+        fuzzy: false,
+        prefix: true
+      }
+    };
+
+    return new MiniSearch(searchOptions);
+  });
+  const [isIndexing, setIndexing] = useState(false);
+  const [searchResults, setSearchResults] = useState(null);
   const [userInput, setUserInput] = useState({
     isCaseSensitive: false,
     searchTerm: ""
@@ -53,10 +61,12 @@ function FileSearcher(props) {
       return;
     }
 
-    addAllAsync(props.sandboxFiles);
-
-    // eslint-disable-next-line
-  }, [props.sandboxFiles.length]);
+    setIndexing(true);
+    
+    miniSearch
+      .addAllAsync(props.sandboxFiles)
+      .then((result) => setIndexing(Boolean(result)));
+  }, [miniSearch, props.sandboxFiles]);
 
   // status is computed value based on other states and props value.
   const status = ((sandboxFilesCount, indexingFiles) => {
@@ -72,7 +82,7 @@ function FileSearcher(props) {
   })(props.sandboxFiles.length, isIndexing);
 
   function executeSearch(searchTerm, isCaseSensitive = false) {
-    search(searchTerm, {
+    const results = miniSearch.search(searchTerm, {
       processTerm: (term) => {
         if (stopWords.has(term)) {
           return null;
@@ -81,6 +91,8 @@ function FileSearcher(props) {
         return isCaseSensitive ? term : term.toLowerCase();
       }
     });
+
+    setSearchResults(results)
 
     setUserInput({
       searchTerm,

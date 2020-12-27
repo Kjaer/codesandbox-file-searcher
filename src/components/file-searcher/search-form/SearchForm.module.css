@@ -1,75 +1,10 @@
-/*
-    It may grab your attention, class names here is prefixed by their context.
-    I decided to do that, because If in future want to split SearchInput out of SearchForm,
-    I can easily detach the relevant classes here.
- */
-
-
-.searchInputContainer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: var(--space-4) var(--space-2);
-    border: 1px solid var(--colors-grays-500);
-    border-radius: var(--radii-small);
-    height: var(--sizes-6);
-    background-color: var(--colors-grays-600);
-    color: var(--colors-grays-400);
-    box-sizing: border-box;
-}
-.searchInputContainer:hover{
-    border-color: var(--colors-grays-400);
-}
-.searchInputContainerActive {
-    border-color: var(--colors-grays-400);
-    color: var(--colors-white);
+.submitButton {
+  composes: regularButton from "../../../lib/elements.module.css";
+  margin: var(--space-1) var(--space-2);
+  width: calc(100% - (2 * var(--space-2)));
+  display: block;
 }
 
-.searchInputItem {
-    display: flex;
-}
-.searchInputItem > * {
-    padding: 0 var(--space-1)
-}
-.searchInputItemLarge{
-    flex: 2;
-}
-
-.searchInput{
-    border: none;
-    height: 100%;
-    width: 100%;
-    background-color: transparent;
-    color: var(--colors-white);
-}
-
-.caseSensitivityToggle {
-    position: relative;
-    cursor: pointer;
-    display: flex;
-}
-.caseSensitivityToggle input[type=checkbox]{
-    visibility: hidden;
-    position: absolute;
-    width: 0;
-    height: 0;
-}
-.caseSensitivityToggle input[type=checkbox] + * {
-    color: var(--colors-grays-400);
-}
-.caseSensitivityToggle input[type=checkbox]:checked + * {
-    color: var(--colors-white);
-}
-
-
-.submitButton{
-    composes: regularButton from "../../../lib/elements.module.css";
-    margin: var(--space-1) var(--space-2);
-    width: calc(100% - (2 * var(--space-2)));
-    display: block;
-}
-
-
-.divider{
-    composes: divider from "../../../lib/elements.module.css";
+.divider {
+  composes: divider from "../../../lib/elements.module.css";
 }

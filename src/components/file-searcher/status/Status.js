@@ -1,27 +1,19 @@
 import styles from "./Status.module.css";
 
 export default function Status(props) {
-  const {
-    message,
-    isLoading,
-    hasResult
-  } = props
+  const { message, isLoading, hasResult } = props;
 
-  const state = [
+  if (message === "") {
+    return null;
+  }
+
+  const stateClasses = [
     styles.status,
     isLoading && styles.loading,
     hasResult && styles.hasResult
   ]
-    .filter(condition => condition)
+    .filter((condition) => condition)
     .join(" ");
 
-  if (message === "") {
-    return null
-  }
-
-  return (
-    <p className={state}>
-      {message}
-    </p>
-  )
+  return <p className={stateClasses}>{message}</p>;
 }

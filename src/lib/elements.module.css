@@ -1,28 +1,28 @@
 /* BUTTON */
-.regularButton{
-    background-color: var(--colors-blues-600);
-    min-height: var(--sizes-6);
+.regularButton {
+  background-color: var(--colors-blues-600);
+  min-height: var(--sizes-6);
 
-    border-radius: var(--radii-small);
-    color: var(--colors-white);
-    text-align: center;
-    border: none;
-    outline: none;
+  border-radius: var(--radii-small);
+  color: var(--colors-white);
+  text-align: center;
+  border: none;
+  outline: none;
 }
 .regularButton:hover,
 .regularButton:focus,
-.regularButton:active{
-    background-color: var(--colors-blues-500);
+.regularButton:active {
+  background-color: var(--colors-blues-500);
 }
-.regularButton:active{
-    transform: scale(0.98);
+.regularButton:active {
+  transform: scale(0.98);
 }
 
 /* DIVIDER */
 .divider {
-    height: 1px;
-    background-color: var(--colors-grays-500);
-    width: 100%;
-    border: none;
-    margin: 0;
+  height: 1px;
+  background-color: var(--colors-grays-500);
+  width: 100%;
+  border: none;
+  margin: 0;
 }

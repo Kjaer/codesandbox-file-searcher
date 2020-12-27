@@ -8,26 +8,26 @@
 $file-tree-item-height: 28px;
 
 // there is no efficient way to produce arbitrary animations :/
-@for $i from 1 through 50 {
-    @keyframes slideDown-#{$i} {
-        0% {
-            opacity: 0;
-            height: 0;
-        }
-
-        99.99% {
-            opacity: 1;
-            height: calc(#{$i} * #{$file-tree-item-height});
-        }
-
-        100% {
-            opacity: 1;
-            height: auto;
-        }
+@for $i from 1 through 100 {
+  @keyframes slideDown-#{$i} {
+    0% {
+      opacity: 0;
+      height: 0;
     }
 
-    .slideDown-#{$i} {
-        animation-name: slideDown-#{$i};
+    99.99% {
+      opacity: 1;
+      height: calc(#{$i} * #{$file-tree-item-height});
     }
+
+    100% {
+      opacity: 1;
+      height: auto;
+    }
+  }
+
+  .slideDown-#{$i} {
+      animation-name: slideDown-#{$i};
+  }
 }
 

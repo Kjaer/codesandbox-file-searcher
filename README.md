@@ -2,6 +2,7 @@
 
 Hi! We're really happy to see you here and thank you for taking the time to do this exercise!
 
+Contender's note: Result of the challenge can be seen here: https://codesandbox-file-searcher.netlify.app/
 ## Problem statement
 
 Given a sandbox, a developer should be able to search across files for a keyword. (Please see figma file below for design)

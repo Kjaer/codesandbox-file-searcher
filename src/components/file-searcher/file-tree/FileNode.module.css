@@ -9,11 +9,6 @@
   user-select: none;
   line-height: 120%;
 }
-
-.name {
-  padding: 0 0 0 var(--space-3);
-}
-
 .file ~ .occurrences {
   list-style: none;
   padding: 0 0 0 var(--space-5);
@@ -27,6 +22,10 @@
   /*slide animation general settings*/
   animation-duration: var(--duration-6);
   animation-fill-mode: forwards;
+}
+
+.name {
+  padding: 0 0 0 var(--space-3);
 }
 
 .line {

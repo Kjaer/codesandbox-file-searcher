@@ -14,7 +14,7 @@ import Status from "./status/Status";
 import styles from "./FileSearcher.module.css";
 
 // Initial State for search engine
-function initSearchEngine(stopWords) {
+function setupSearchEngine() {
   // Tokenizer options
   const tokenizerOptions = {
     includeWords: true,
@@ -22,16 +22,33 @@ function initSearchEngine(stopWords) {
     includeWhitespace: false,
     includePunctuation: true,
     includeUnknown: true,
-    greedy: true,
+    greedy: false,
     verbose: false
   };
 
   // Full Text Search Engine options
+
+  // Stopwords are taken from here: https://github.com/NaturalNode/natural/blob/master/lib/natural/util/stopwords.js
+  // const stopWords = new Set(["about","above","after","again","all","also","am","an","and","another","any","are","as","at","be","because","been","before","being","below","between","both","but","by","came","can","cannot","come","could","did","do","does","doing","during","each","few","for","from","further","get","got","has","had","he","have","her","here","him","himself","his","how","if","in","into","is","it","its","itself","like","make","many","me","might","more","most","much","must","my","myself","never","now","of","on","only","or","other","our","ours","ourselves","out","over","own","said","same","see","should","since","so","some","still","such","take","than","that","the","their","theirs","them","themselves","then","there","these","they","this","those","through","to","too","under","until","up","very","was","way","we","well","were","what","where","when","which","while","who","whom","with","would","why","you","your","yours","yourself","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","$","1","2","3","4","5","6","7","8","9","0",]);
+  // processTerm: (term) => (stopWords.has(term) ? null : term),
+
   const searchOptions = {
     fields: ["code"],
     storeFields: ["title", "code"],
-    processTerm: (term) => (stopWords.has(term) ? null : term),
-    tokenize: (text) => tokenize({ text, ...tokenizerOptions }).map((token) => token.toLowerCase()),
+    tokenize: (text) => tokenize({ text, ...tokenizerOptions })
+      .reduce((tokenList, token) => {
+        const whiteSpace = /\s/g;
+        const camelCasedToken = token.replace(/([a-z0-9])([A-Z])/g, '$1 $2');
+        
+        if (whiteSpace.test(camelCasedToken)) {
+          tokenList.push(...camelCasedToken.split(" "));
+        } else {
+          tokenList.push(token);
+        }
+        
+        return tokenList
+      }, [])
+      .map((token) => token.toLowerCase()),
     searchOptions: {
       fuzzy: false,
       prefix: true
@@ -43,9 +60,8 @@ function initSearchEngine(stopWords) {
 
 function FileSearcher(props) {
   const { sandboxFiles } = props;
-  const stopWords = new Set(["the", "a", "an"]);
 
-  const [miniSearch] = useState(() => initSearchEngine(stopWords));
+  const [miniSearch] = useState(() => setupSearchEngine());
   const [isIndexing, setIndexing] = useState(false);
   const [searchResults, setSearchResults] = useState(null);
   const [userInput, setUserInput] = useState({
@@ -80,13 +96,7 @@ function FileSearcher(props) {
 
   function executeSearch(searchTerm, isCaseSensitive = false) {
     const results = miniSearch.search(searchTerm, {
-      processTerm: (term) => {
-        if (stopWords.has(term)) {
-          return null;
-        }
-
-        return isCaseSensitive ? term : term.toLowerCase();
-      }
+      processTerm: (term) => isCaseSensitive ? term : term.toLowerCase()
     });
 
     setSearchResults(results)

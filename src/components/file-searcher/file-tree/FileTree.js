@@ -15,12 +15,14 @@ export default function FileTree(props) {
     return null;
   }
 
-  const files = props.files.map(({ id, code, title }) => ({
-    id,
-    name: title,
-    matches: findOccurrencesAndHighlight(code, props.userInput)
-  }));
-
+  const files = props.files
+    .map(({ id, code, title }) => ({
+      id,
+      name: title,
+      matches: findOccurrencesAndHighlight(code, props.userInput)
+    }))
+    .filter(({ matches }) => matches.occurrence > 0);
+    
   const uniqueFileKeys =
     files.length > 0
       ? globalThis.crypto.getRandomValues(new Uint16Array(files.length))

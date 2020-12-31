@@ -1,15 +1,13 @@
 import { useRef, forwardRef } from "react";
 
+// Components
+import { SearchIcon, MatchCaseIcon } from "../../../lib/icons";
+
 // Styles
 import styles from "./SearchInput.module.css";
 
 function SearchInput(props, ref) {
-  const {
-    iconSearch,
-    iconCaseSensitivityToggle,
-    setSearchTerm,
-    setCaseSensitivity
-  } = props;
+  const { setSearchTerm, setCaseSensitivity, onSearchKeyDown } = props;
 
   const searchContainer = useRef(null);
 
@@ -24,7 +22,7 @@ function SearchInput(props, ref) {
       return;
     }
 
-    props.onSearchKeyDown();
+    onSearchKeyDown();
   };
 
   const onToggleCaseSensitive = (event) => {
@@ -43,40 +41,11 @@ function SearchInput(props, ref) {
     }
   }
 
-  // render
-  function addSearchIcon(SearchIcon) {
-    if (!SearchIcon) {
-      return null;
-    }
-
-    return (
+  return (
+    <div ref={searchContainer} className={styles.container}>
       <div className={styles.wrapper}>
         <SearchIcon size={16} />
       </div>
-    );
-  }
-
-  function addCaseSensitivityToggle(MatchCaseToggleIcon, onChangeHandler) {
-    if (!MatchCaseToggleIcon) {
-      return null;
-    }
-
-    return (
-      <div className={styles.wrapper}>
-        <label
-          className={styles.caseSensitivityToggle}
-          data-testid="csbx-file-search-case-sensitivity-toggle"
-        >
-          <input type="checkbox" onChange={onChangeHandler} />
-          <MatchCaseToggleIcon size={16} />
-        </label>
-      </div>
-    );
-  }
-
-  return (
-    <div ref={searchContainer} className={styles.container}>
-      {addSearchIcon(iconSearch)}
 
       <div className={[styles.wrapper, styles.wrapperLarge].join(" ")}>
         <input
@@ -95,10 +64,15 @@ function SearchInput(props, ref) {
         />
       </div>
 
-      {addCaseSensitivityToggle(
-        iconCaseSensitivityToggle,
-        onToggleCaseSensitive
-      )}
+      <div className={styles.wrapper}>
+        <label
+          className={styles.caseSensitivityToggle}
+          data-testid="csbx-file-search-case-sensitivity-toggle"
+        >
+          <input type="checkbox" onChange={onToggleCaseSensitive} />
+          <MatchCaseIcon size={16} />
+        </label>
+      </div>
     </div>
   );
 }

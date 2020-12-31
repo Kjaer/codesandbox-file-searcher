@@ -15,17 +15,21 @@ export default function FileTree(props) {
     return null;
   }
 
-  const files = props.files
-    .map(({ id, code, title }) => ({
-      id,
-      name: title,
-      matches: findOccurrencesAndHighlight(code, props.userInput)
-    }))
-    .filter(({ matches }) => matches.occurrence > 0);
+  const files = props.files.map(({ id, code, title }) => ({
+    id,
+    name: title,
+    matches: findOccurrencesAndHighlight(code, props.userInput)
+  }));
 
-  const uniqueFileKeys = files.length > 0 ? globalThis.crypto.getRandomValues(new Uint16Array(files.length)) : [];
+  const uniqueFileKeys =
+    files.length > 0
+      ? globalThis.crypto.getRandomValues(new Uint16Array(files.length))
+      : [];
 
-  const totalOccurrences = files.reduce((total, file) => total + file.matches.occurrence, 0);
+  const totalOccurrences = files.reduce(
+    (total, file) => total + file.matches.occurrence,
+    0
+  );
 
   // status is computed value based on other variables and props value.
   const status = ((filesCount, occurrences) => {
@@ -64,7 +68,9 @@ function findOccurrencesAndHighlight(source, userInput) {
     const afterCursor = source.indexOf("\n", cursor);
 
     const prefix = source.slice(beforeCursor, cursor).trimLeft();
-    const suffix = source.slice(cursor + pattern.length, afterCursor).trimRight();
+    const suffix = source
+      .slice(cursor + pattern.length, afterCursor)
+      .trimRight();
     const searchKeyWord = source.slice(cursor, cursor + pattern.length);
 
     return {

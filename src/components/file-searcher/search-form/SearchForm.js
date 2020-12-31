@@ -2,7 +2,6 @@ import { useState, useRef, Fragment } from "react";
 
 // Components
 import SearchInput from "./SearchInput";
-import { SearchIcon, MatchCaseIcon } from "../../../lib/icons";
 
 // Styles
 import styles from "./SearchForm.module.css";
@@ -13,8 +12,11 @@ export default function SearchForm(props) {
   const inputSearchElement = useRef(null);
 
   function onSearchSubmit() {
-    if (searchTerm === "" || searchTerm.length < 3) {
-      inputSearchElement.current && inputSearchElement.current.reportValidity();
+    if (
+      inputSearchElement.current &&
+      !inputSearchElement.current.checkValidity()
+    ) {
+      inputSearchElement.current.reportValidity();
       return;
     }
 
@@ -27,8 +29,6 @@ export default function SearchForm(props) {
         ref={inputSearchElement}
         setSearchTerm={setSearchTerm}
         setCaseSensitivity={setCaseSensitivity}
-        iconSearch={SearchIcon}
-        iconCaseSensitivityToggle={MatchCaseIcon}
         onSearchKeyDown={onSearchSubmit}
       />
 

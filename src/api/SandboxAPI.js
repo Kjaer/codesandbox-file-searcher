@@ -5,9 +5,9 @@ const MOCK_API_URL = 'https://run.mocky.io/v3/5ca2c543-14b1-4984-8e3f-96d4cc23b7
 // this mock api url can be deleted via this url ->
 // https://designer.mocky.io/manage/delete/5ca2c543-14b1-4984-8e3f-96d4cc23b71d/codesandbox-kjaer-challenge
 
-export async function fetchSandbox() {
-  const response = await fetch(MOCK_API_URL);
-  const sandbox = await response.json();
+export function fetchSandbox() {
+  const sandbox = fetch(MOCK_API_URL)
+  .then((data) => data.json());
 
   return sandbox;
 }

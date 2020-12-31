@@ -49,8 +49,7 @@ describe("FileSearcher", () => {
 
   it("Search can be performed with Enter Key", async () => {
     const searchSpy = jest
-      .spyOn(MiniSearch.prototype, "search")
-      .mockImplementation(() => []);
+      .spyOn(MiniSearch.prototype, "search");
 
     await waitFor(() => {
       render(<FileSearcher />);
